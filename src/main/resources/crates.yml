@@ -9,7 +9,7 @@ keys:
         - "<gray>Use this key to open"
         - "<gray>the Basic Crate."
       enchantments:
-        DURABILITY: 1
+        unbreaking: 1
       custom-model-data: 1001
 
 crates:

@@ -2,6 +2,7 @@ package me.jackstar.drakescrates.application.repositories;
 
 import me.jackstar.drakescrates.domain.models.Crate;
 import me.jackstar.drakescrates.domain.models.Key;
+import org.bukkit.Location;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -19,4 +20,6 @@ public interface CrateRepository {
     Optional<Key> findKeyById(String keyId);
 
     Optional<Key> findRequiredKeyForCrate(String crateId);
+
+    Optional<Crate> findCrateByLocation(Location location);
 }

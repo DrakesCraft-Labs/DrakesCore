@@ -100,6 +100,26 @@ public class YamlCrateRepository implements CrateRepository {
         return Optional.ofNullable(keys.get(requiredKeyId));
     }
 
+    @Override
+    public Optional<Crate> findCrateByLocation(Location location) {
+        if (location == null || location.getWorld() == null) {
+            return Optional.empty();
+        }
+
+        for (Crate crate : crates.values()) {
+            List<Location> crateLocations = crate.getLocations();
+            if (crateLocations == null || crateLocations.isEmpty()) {
+                continue;
+            }
+            for (Location crateLocation : crateLocations) {
+                if (sameBlock(crateLocation, location)) {
+                    return Optional.of(crate);
+                }
+            }
+        }
+        return Optional.empty();
+    }
+
     private void loadKeys(ConfigurationSection keysSection) {
         if (keysSection == null) {
             plugin.getLogger().warning("No keys section found in crates.yml.");
@@ -362,5 +382,15 @@ public class YamlCrateRepository implements CrateRepository {
         }
         String normalized = id.trim().toLowerCase(Locale.ROOT);
         return normalized.isEmpty() ? null : normalized;
+    }
+
+    private boolean sameBlock(Location first, Location second) {
+        if (first == null || second == null || first.getWorld() == null || second.getWorld() == null) {
+            return false;
+        }
+        return first.getWorld().getUID().equals(second.getWorld().getUID())
+                && first.getBlockX() == second.getBlockX()
+                && first.getBlockY() == second.getBlockY()
+                && first.getBlockZ() == second.getBlockZ();
     }
 }
