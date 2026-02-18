@@ -35,14 +35,20 @@ public class RouletteAnimation implements CrateAnimation, Listener {
     private static final int ROLL_END_SLOT = 17;
     private static final int WIN_SLOT = 13;
     private static final int WINDOW_SIZE = 9;
-    private static final int TOTAL_STEPS = 50;
-    private static final long TICK_PERIOD = 2L;
 
     private final JavaPlugin plugin;
+    private final int totalSteps;
+    private final long tickPeriod;
     private final Map<UUID, Session> sessions = new ConcurrentHashMap<>();
 
     public RouletteAnimation(JavaPlugin plugin) {
+        this(plugin, 50, 2L);
+    }
+
+    public RouletteAnimation(JavaPlugin plugin, int totalSteps, long tickPeriod) {
         this.plugin = plugin;
+        this.totalSteps = Math.max(10, totalSteps);
+        this.tickPeriod = Math.max(1L, tickPeriod);
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
@@ -221,7 +227,7 @@ public class RouletteAnimation implements CrateAnimation, Listener {
                         renderWindow(step);
                         player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 0.6F, 1.7F);
 
-                        if (step >= TOTAL_STEPS) {
+                        if (step >= totalSteps) {
                             finish(true);
                             return;
                         }
@@ -233,7 +239,7 @@ public class RouletteAnimation implements CrateAnimation, Listener {
                     }
                 }
             };
-            this.task.runTaskTimer(plugin, 0L, TICK_PERIOD);
+            this.task.runTaskTimer(plugin, 0L, tickPeriod);
         }
 
         private void renderWindow(int currentStep) {
@@ -243,8 +249,8 @@ public class RouletteAnimation implements CrateAnimation, Listener {
         }
 
         private List<ItemStack> buildRibbon(Crate crate, Reward winReward) {
-            int totalSize = TOTAL_STEPS + WINDOW_SIZE;
-            int winIndex = TOTAL_STEPS + 4;
+            int totalSize = totalSteps + WINDOW_SIZE;
+            int winIndex = totalSteps + 4;
             List<ItemStack> items = new ArrayList<>(totalSize);
             for (int i = 0; i < totalSize; i++) {
                 items.add(chooseRandomRewardDisplay(crate));

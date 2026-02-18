@@ -3,6 +3,7 @@ package me.jackstar.drakescrates.presentation.commands;
 import me.jackstar.drakescraft.utils.MessageUtils;
 import me.jackstar.drakescrates.application.repositories.CrateRepository;
 import me.jackstar.drakescrates.domain.models.Key;
+import me.jackstar.drakescrates.presentation.editor.CrateEditorManager;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -14,9 +15,11 @@ import org.jetbrains.annotations.NotNull;
 public class DrakesCratesCommand implements CommandExecutor {
 
     private final CrateRepository crateRepository;
+    private final CrateEditorManager crateEditorManager;
 
-    public DrakesCratesCommand(CrateRepository crateRepository) {
+    public DrakesCratesCommand(CrateRepository crateRepository, CrateEditorManager crateEditorManager) {
         this.crateRepository = crateRepository;
+        this.crateEditorManager = crateEditorManager;
     }
 
     @Override
@@ -40,6 +43,14 @@ public class DrakesCratesCommand implements CommandExecutor {
 
         if ("givekey".equalsIgnoreCase(args[0])) {
             return handleGiveKey(sender, label, args);
+        }
+        if ("editor".equalsIgnoreCase(args[0])) {
+            if (!(sender instanceof Player player)) {
+                MessageUtils.send(sender, "<red>Only players can open the editor.</red>");
+                return true;
+            }
+            crateEditorManager.openEditor(player, args.length > 1 ? args[1] : null);
+            return true;
         }
 
         sendUsage(sender, label);
@@ -121,6 +132,7 @@ public class DrakesCratesCommand implements CommandExecutor {
     private void sendUsage(CommandSender sender, String label) {
         MessageUtils.send(sender, "<yellow>DrakesCrates commands:</yellow>");
         MessageUtils.send(sender, "<gray>/" + label + " givekey <player> <key_id> <amount></gray>");
+        MessageUtils.send(sender, "<gray>/" + label + " editor [crate_id]</gray>");
         MessageUtils.send(sender, "<gray>/" + label + " reload</gray>");
     }
 }

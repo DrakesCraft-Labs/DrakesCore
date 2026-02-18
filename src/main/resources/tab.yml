@@ -1,0 +1,21 @@
+tab:
+  # Tiempo (ticks) entre cada cambio de frame del header/footer.
+  # Recomendado: 10-40.
+  # [DANGER] Valores menores a 2 pueden generar carga extra en redes grandes.
+  update-interval-ticks: 20
+
+  # Frames animados del header del TAB.
+  # Soporta MiniMessage y PlaceholderAPI.
+  header-frames:
+    - "<gradient:gold:yellow><b>DrakesCraft</b></gradient>\n<gray>Survival • Tech • Crates</gray>"
+    - "<gradient:aqua:blue><b>DrakesCraft</b></gradient>\n<gray>Survival • Tech • Crates</gray>"
+
+  # Frames animados del footer del TAB.
+  # Soporta MiniMessage y PlaceholderAPI.
+  footer-frames:
+    - "<gray>Online:</gray> <green>%server_online%</green> <dark_gray>|</dark_gray> <yellow>drakescraft.net</yellow>"
+    - "<gray>Discord:</gray> <aqua>discord.gg/drakes</aqua>"
+
+sidebar:
+  # Activa/desactiva la barra lateral de scoreboard.
+  enabled: true

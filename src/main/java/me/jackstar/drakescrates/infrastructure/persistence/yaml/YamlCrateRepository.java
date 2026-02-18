@@ -120,6 +120,53 @@ public class YamlCrateRepository implements CrateRepository {
         return Optional.empty();
     }
 
+    @Override
+    public boolean updateRewardChance(String crateId, String rewardId, double newChance) {
+        String normalizedCrateId = normalizeId(crateId);
+        String normalizedRewardId = normalizeId(rewardId);
+        if (normalizedCrateId == null || normalizedRewardId == null || newChance <= 0.0D) {
+            return false;
+        }
+
+        File file = new File(plugin.getDataFolder(), FILE_NAME);
+        if (!file.exists()) {
+            return false;
+        }
+
+        try {
+            YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
+            ConfigurationSection cratesSection = config.getConfigurationSection("crates");
+            if (cratesSection == null) {
+                return false;
+            }
+
+            String rawCrateKey = findRawKeyByNormalizedId(cratesSection, normalizedCrateId);
+            if (rawCrateKey == null) {
+                return false;
+            }
+
+            ConfigurationSection rewardsSection = config.getConfigurationSection("crates." + rawCrateKey + ".rewards");
+            if (rewardsSection == null) {
+                return false;
+            }
+
+            String rawRewardKey = findRawKeyByNormalizedId(rewardsSection, normalizedRewardId);
+            if (rawRewardKey == null) {
+                return false;
+            }
+
+            config.set("crates." + rawCrateKey + ".rewards." + rawRewardKey + ".chance", newChance);
+            config.save(file);
+            reload();
+            return true;
+        } catch (Exception ex) {
+            plugin.getLogger().log(Level.WARNING,
+                    "Failed to update reward chance for crate '" + crateId + "', reward '" + rewardId + "'.",
+                    ex);
+            return false;
+        }
+    }
+
     private void loadKeys(ConfigurationSection keysSection) {
         if (keysSection == null) {
             plugin.getLogger().warning("No keys section found in crates.yml.");
@@ -392,5 +439,14 @@ public class YamlCrateRepository implements CrateRepository {
                 && first.getBlockX() == second.getBlockX()
                 && first.getBlockY() == second.getBlockY()
                 && first.getBlockZ() == second.getBlockZ();
+    }
+
+    private String findRawKeyByNormalizedId(ConfigurationSection section, String normalizedId) {
+        for (String key : section.getKeys(false)) {
+            if (normalizedId.equals(normalizeId(key))) {
+                return key;
+            }
+        }
+        return null;
     }
 }

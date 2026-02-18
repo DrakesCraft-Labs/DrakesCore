@@ -1,7 +1,15 @@
+# Definición de llaves y cajas de DrakesCrates.
+# Este archivo se usa tanto para gameplay como para editor in-game.
+#
+# [DANGER] Si cambias IDs (keys/crates/rewards), revisa comandos y ubicaciones.
+# [DANGER] Chances <= 0 desactivan el reward.
+
 keys:
   basic_key:
+    # Nombre visible de la llave (MiniMessage).
     display-name: "<gold><b>Basic Key</b></gold>"
     item:
+      # Material del item físico de llave.
       material: TRIPWIRE_HOOK
       amount: 1
       name: "<yellow>Basic Key"
@@ -14,8 +22,11 @@ keys:
 
 crates:
   basic:
+    # Nombre de crate en menús/feedback.
     display-name: "<gradient:gold:yellow><b>Basic Crate</b></gradient>"
+    # Tipos: PHYSICAL_KEY, VIRTUAL_KEY, FREE
     type: PHYSICAL_KEY
+    # Key requerida si type = PHYSICAL_KEY
     key-id: basic_key
     preview-item:
       material: CHEST
@@ -24,6 +35,7 @@ crates:
       lore:
         - "<gray>Contains common rewards."
     locations:
+      # Formato: world,x,y,z[,yaw,pitch]
       - "world,0,64,0"
     rewards:
       coins:

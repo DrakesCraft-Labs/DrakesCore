@@ -8,6 +8,7 @@ import me.jackstar.drakescrates.domain.models.CrateType;
 import me.jackstar.drakescrates.domain.models.Key;
 import me.jackstar.drakescrates.domain.models.OpenResult;
 import me.jackstar.drakescrates.presentation.animation.CrateAnimation;
+import me.jackstar.drakescrates.presentation.editor.CratePreviewManager;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -25,12 +26,14 @@ public class CrateListener implements Listener {
     private final CrateRepository crateRepository;
     private final OpenCrateUseCase openCrateUseCase;
     private final CrateAnimation crateAnimation;
+    private final CratePreviewManager cratePreviewManager;
 
     public CrateListener(CrateRepository crateRepository, OpenCrateUseCase openCrateUseCase,
-            CrateAnimation crateAnimation) {
+            CrateAnimation crateAnimation, CratePreviewManager cratePreviewManager) {
         this.crateRepository = crateRepository;
         this.openCrateUseCase = openCrateUseCase;
         this.crateAnimation = crateAnimation;
+        this.cratePreviewManager = cratePreviewManager;
     }
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
@@ -38,7 +41,8 @@ public class CrateListener implements Listener {
         if (event.getHand() != EquipmentSlot.HAND) {
             return;
         }
-        if (event.getAction() != Action.RIGHT_CLICK_BLOCK || event.getClickedBlock() == null) {
+        if ((event.getAction() != Action.RIGHT_CLICK_BLOCK && event.getAction() != Action.LEFT_CLICK_BLOCK)
+                || event.getClickedBlock() == null) {
             return;
         }
 
@@ -52,6 +56,11 @@ public class CrateListener implements Listener {
         event.setCancelled(true);
 
         Crate crate = crateOptional.get();
+        if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
+            cratePreviewManager.openPreview(player, crate);
+            return;
+        }
+
         ItemStack keyForValidation = null;
 
         if (crate.getType() == CrateType.PHYSICAL_KEY) {
