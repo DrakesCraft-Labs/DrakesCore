@@ -2,5 +2,18 @@ package me.jackstar.drakestech.energy;
 
 import org.bukkit.Location;
 
-public record EnergyNode(String id, Location location, int capacity, int maxInputPerTick, int maxOutputPerTick) {
+public interface EnergyNode {
+    Location getLocation();
+
+    double getStoredEnergy();
+
+    double getMaxEnergy();
+
+    void receiveEnergy(double amount);
+
+    double extractEnergy(double maxAmount);
+
+    boolean canReceive();
+
+    boolean canExtract();
 }

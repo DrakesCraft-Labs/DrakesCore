@@ -1,65 +1,41 @@
 package me.jackstar.drakestech.heads;
 
+import com.destroystokyo.paper.profile.PlayerProfile;
+import com.destroystokyo.paper.profile.ProfileProperty;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
-import org.bukkit.profile.PlayerProfile;
-import org.bukkit.profile.PlayerTextures;
-
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.util.Base64;
 import java.util.UUID;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public enum CustomHeads {
-    MACHINE_CORE("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvY2Q0ZWM2YzkzZDY1MGI0NDQ5NDFjY2M5MzVjYWU3YmNhYzU5MTRhNGE4ZjQyODVhZTgyODRjYWM4MjQxNmM0In19fQ=="),
-    ENERGY_CELL("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNmE4NGQ5NzgxNDRhNzhjYjU5NDI4Y2ViM2Q3ZDdmYjcxZTlhZDRjN2E2YjFjMDQ2YzIzMjM0YjgxZDcwYTk1ZCJ9fX0=");
 
-    private static final Pattern URL_PATTERN = Pattern.compile("\"url\"\\s*:\\s*\"([^\"]+)\"");
+    RUBY_ORE(
+            "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTI5NGU0OGIyYzU5YmMxNjE4OTJkODkzMjI4MjM5ZTE3ZDM4NjkyY2Q2ZWI1MDk5YzgxZjExYTY4NjY4ZGIifX19"),
+    SAPPHIRE_ORE(
+            "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzM1YjU0YmIyMzllZGY2ZGE2ZjBlYTM2YjE5ZWY1NTY2Y2QyM2E4OWM1ZGI0ZDE2OTA2YzQ2ZTRiNDkwIn19");
 
-    private final String base64;
+    private final String texture;
+    private ItemStack item;
 
-    CustomHeads(String base64) {
-        this.base64 = base64;
+    CustomHeads(String texture) {
+        this.texture = texture;
     }
 
-    public ItemStack createItem() {
+    public ItemStack getItem() {
+        if (item == null) {
+            item = createSkull(texture);
+        }
+        return item.clone();
+    }
+
+    private ItemStack createSkull(String base64) {
         ItemStack head = new ItemStack(Material.PLAYER_HEAD);
         SkullMeta meta = (SkullMeta) head.getItemMeta();
-        if (meta == null) {
-            return head;
-        }
-
-        URL skinUrl = decodeSkinUrl(base64);
-        if (skinUrl == null) {
-            return head;
-        }
-
-        PlayerProfile profile = Bukkit.createPlayerProfile(UUID.randomUUID());
-        PlayerTextures textures = profile.getTextures();
-        textures.setSkin(skinUrl);
-        profile.setTextures(textures);
-        meta.setOwnerProfile(profile);
+        PlayerProfile profile = Bukkit.createProfile(UUID.randomUUID());
+        profile.getProperties().add(new ProfileProperty("textures", base64));
+        meta.setPlayerProfile(profile);
         head.setItemMeta(meta);
         return head;
-    }
-
-    private URL decodeSkinUrl(String base64Texture) {
-        try {
-            String decoded = new String(Base64.getDecoder().decode(base64Texture), StandardCharsets.UTF_8);
-            Matcher matcher = URL_PATTERN.matcher(decoded);
-            if (!matcher.find()) {
-                return null;
-            }
-            String raw = matcher.group(1);
-            return URI.create(raw).toURL();
-        } catch (IllegalArgumentException | MalformedURLException ex) {
-            return null;
-        }
     }
 }

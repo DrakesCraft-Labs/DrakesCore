@@ -1,11 +1,22 @@
 package me.jackstar.drakestech.multiblock;
 
-import me.jackstar.drakestech.machines.Rotation;
 import org.bukkit.Location;
+import org.bukkit.block.Block;
+import org.bukkit.util.Vector;
+import java.util.Map;
 
-public interface MultiblockDetector {
+public class MultiblockDetector {
 
-    String getPatternId();
+    public boolean matches(Location center, Map<Vector, String> structureMap) {
+        for (Map.Entry<Vector, String> entry : structureMap.entrySet()) {
+            Vector offset = entry.getKey();
+            String expectedMaterial = entry.getValue();
 
-    MultiblockValidationResult validate(Location origin, Rotation rotation);
+            Block block = center.clone().add(offset).getBlock();
+            if (!block.getType().name().equalsIgnoreCase(expectedMaterial)) {
+                return false;
+            }
+        }
+        return true;
+    }
 }

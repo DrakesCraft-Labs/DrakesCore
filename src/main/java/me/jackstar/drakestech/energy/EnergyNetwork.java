@@ -1,25 +1,13 @@
 package me.jackstar.drakestech.energy;
 
-import java.util.Collection;
-import java.util.Optional;
-
 public interface EnergyNetwork {
+    void addSource(EnergyNode node);
 
-    String getNetworkId();
+    void addSink(EnergyNode node);
 
-    void addNode(EnergyNode node);
+    double getTotalStored();
 
-    void removeNode(String nodeId);
+    double getCapacity();
 
-    Optional<EnergyNode> findNode(String nodeId);
-
-    Collection<EnergyNode> getNodes();
-
-    int getStoredEnergy(String nodeId);
-
-    int offerEnergy(String nodeId, int amount);
-
-    int extractEnergy(String nodeId, int amount);
-
-    void tickFlow();
+    void tick(); // Distribute energy
 }
