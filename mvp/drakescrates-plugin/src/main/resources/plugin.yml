@@ -1,0 +1,7 @@
+name: DrakesCrates
+version: 1.0.0-MVP
+main: me.jackstar.mvp.crates.DrakesCratesPlugin
+api-version: '1.20'
+authors: [JackStar]
+description: DrakesCrates MVP addon
+softdepend: [DrakesCore]

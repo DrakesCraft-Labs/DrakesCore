@@ -1,0 +1,7 @@
+name: DrakesRanks
+version: 1.0.0-MVP
+main: me.jackstar.mvp.ranks.DrakesRanksPlugin
+api-version: '1.20'
+authors: [JackStar]
+description: DrakesRanks MVP addon
+softdepend: [DrakesCore]

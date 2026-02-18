@@ -1,0 +1,7 @@
+name: DrakesTech
+version: 1.0.0-MVP
+main: me.jackstar.mvp.tech.DrakesTechPlugin
+api-version: '1.20'
+authors: [JackStar]
+description: DrakesTech MVP addon
+softdepend: [DrakesCore]
