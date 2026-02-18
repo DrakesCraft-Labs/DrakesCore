@@ -9,8 +9,15 @@ commands:
     description: Admin command for DrakesCrates
     usage: /drakescrates <givekey|reload>
     permission: drakescrates.admin
+  drakestech:
+    description: Admin command for DrakesTech
+    usage: /drakestech give <player> <machine_id>
+    permission: drakestech.admin
 permissions:
   drakescrates.admin:
     description: Allows use of DrakesCrates admin command
+    default: op
+  drakestech.admin:
+    description: Allows use of DrakesTech admin command
     default: op
 

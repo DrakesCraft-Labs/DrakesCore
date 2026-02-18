@@ -22,4 +22,6 @@ public interface CrateRepository {
     Optional<Key> findRequiredKeyForCrate(String crateId);
 
     Optional<Crate> findCrateByLocation(Location location);
+
+    boolean updateRewardChance(String crateId, String rewardId, double newChance);
 }

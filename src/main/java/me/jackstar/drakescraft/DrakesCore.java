@@ -6,6 +6,12 @@ import me.jackstar.drakescrates.infrastructure.persistence.yaml.YamlCrateReposit
 import me.jackstar.drakescrates.presentation.animation.RouletteAnimation;
 import me.jackstar.drakescrates.presentation.commands.DrakesCratesCommand;
 import me.jackstar.drakescrates.presentation.listeners.CrateListener;
+import me.jackstar.drakestech.commands.DrakesTechCommand;
+import me.jackstar.drakestech.listeners.DrakesTechBlockListener;
+import me.jackstar.drakestech.manager.MachineManager;
+import me.jackstar.drakestech.machines.factory.MachineFactory;
+import me.jackstar.drakestech.nbt.NbtItemHandler;
+import me.jackstar.drakestech.nbt.PdcNbtItemHandler;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.command.PluginCommand;
@@ -18,6 +24,7 @@ public class DrakesCore extends JavaPlugin implements DrakesCoreAPI {
     private static DrakesCore instance;
     private CrateRepository crateRepository;
     private RouletteAnimation rouletteAnimation;
+    private MachineManager machineManager;
 
     public static DrakesCore getInstance() {
         return instance;
@@ -58,12 +65,31 @@ public class DrakesCore extends JavaPlugin implements DrakesCoreAPI {
         getServer().getPluginManager().registerEvents(
                 new CrateListener(crateRepository, openCrateUseCase, rouletteAnimation),
                 this);
+
+        NbtItemHandler nbtItemHandler = new PdcNbtItemHandler(this);
+        MachineFactory machineFactory = new MachineFactory(nbtItemHandler);
+        machineManager = new MachineManager(this, machineFactory);
+        machineManager.start();
+
+        PluginCommand drakesTechCommand = getCommand("drakestech");
+        if (drakesTechCommand != null) {
+            drakesTechCommand.setExecutor(new DrakesTechCommand(machineFactory));
+        } else {
+            getLogger().warning("Command 'drakestech' not found in plugin.yml.");
+        }
+
+        getServer().getPluginManager().registerEvents(
+                new DrakesTechBlockListener(machineManager, machineFactory),
+                this);
     }
 
     @Override
     public void onDisable() {
         if (rouletteAnimation != null) {
             rouletteAnimation.shutdown();
+        }
+        if (machineManager != null) {
+            machineManager.stop();
         }
         // Plugin shutdown logic
         getComponentLogger().info(Component.text("DrakesCore has been disabled.", NamedTextColor.RED));
