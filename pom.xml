@@ -23,8 +23,7 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.13.0</version>
                 <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
+                    <release>${java.version}</release>
                 </configuration>
             </plugin>
             <plugin>
@@ -58,6 +57,10 @@
             <id>sonatype</id>
             <url>https://oss.sonatype.org/content/groups/public/</url>
         </repository>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -66,6 +69,20 @@
             <artifactId>paper-api</artifactId>
             <version>1.20.6-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
+        </dependency>
+        <!-- MockBukkit for Server Simulation -->
+        <dependency>
+            <groupId>com.github.MockBukkit</groupId>
+            <artifactId>MockBukkit</artifactId>
+            <version>v1.20-SNAPSHOT</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- JUnit 5 -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.10.2</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>
