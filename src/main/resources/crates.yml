@@ -1,0 +1,64 @@
+keys:
+  basic_key:
+    display-name: "<gold><b>Basic Key</b></gold>"
+    item:
+      material: TRIPWIRE_HOOK
+      amount: 1
+      name: "<yellow>Basic Key"
+      lore:
+        - "<gray>Use this key to open"
+        - "<gray>the Basic Crate."
+      enchantments:
+        DURABILITY: 1
+      custom-model-data: 1001
+
+crates:
+  basic:
+    display-name: "<gradient:gold:yellow><b>Basic Crate</b></gradient>"
+    type: PHYSICAL_KEY
+    key-id: basic_key
+    preview-item:
+      material: CHEST
+      amount: 1
+      name: "<gold>Basic Crate"
+      lore:
+        - "<gray>Contains common rewards."
+    locations:
+      - "world,0,64,0"
+    rewards:
+      coins:
+        display-name: "<yellow>Coins Reward"
+        chance: 60.0
+        commands:
+          - "eco give %player% 250"
+        display-item:
+          material: GOLD_NUGGET
+          amount: 8
+          name: "<yellow>250 Coins"
+          lore:
+            - "<gray>Common economy reward."
+      diamond_pack:
+        display-name: "<aqua>Diamond Pack"
+        chance: 35.0
+        commands:
+          - "give %player% diamond 5"
+        display-item:
+          material: DIAMOND
+          amount: 5
+          name: "<aqua>Diamond Pack"
+          lore:
+            - "<gray>Useful crafting reward."
+      legendary_pickaxe:
+        display-name: "<rainbow>Legendary Pickaxe"
+        chance: 5.0
+        commands:
+          - "give %player% netherite_pickaxe 1"
+        display-item:
+          material: NETHERITE_PICKAXE
+          amount: 1
+          name: "<rainbow>Legendary Pickaxe"
+          lore:
+            - "<gray>Rare jackpot reward."
+          enchantments:
+            EFFICIENCY: 5
+            UNBREAKING: 3
