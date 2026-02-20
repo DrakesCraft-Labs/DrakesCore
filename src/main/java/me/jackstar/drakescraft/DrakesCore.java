@@ -21,6 +21,7 @@ import me.jackstar.drakestech.machines.factory.MachineFactory;
 import me.jackstar.drakestech.nbt.NbtItemHandler;
 import me.jackstar.drakestech.nbt.PdcNbtItemHandler;
 import me.jackstar.drakestab.TabManager;
+import me.jackstar.drakestab.economy.VaultEconomyProvider;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.command.PluginCommand;
@@ -39,6 +40,7 @@ public class DrakesCore extends JavaPlugin implements DrakesCoreAPI {
     private MotdManager motdManager;
     private TabManager tabManager;
     private DrakesRanksManager ranksManager;
+    private VaultEconomyProvider economyProvider;
 
     public static DrakesCore getInstance() {
         return instance;
@@ -85,6 +87,9 @@ public class DrakesCore extends JavaPlugin implements DrakesCoreAPI {
         getServer().getPluginManager().registerEvents(
                 crateEditorManager,
                 this);
+        getServer().getPluginManager().registerEvents(
+                cratePreviewManager,
+                this);
 
         if (getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
             new DrakesCratesPlaceholderExpansion(crateRepository).register();
@@ -109,9 +114,6 @@ public class DrakesCore extends JavaPlugin implements DrakesCoreAPI {
         motdManager = new MotdManager(this);
         getServer().getPluginManager().registerEvents(motdManager, this);
 
-        tabManager = new TabManager(this);
-        tabManager.start();
-
         ranksManager = new DrakesRanksManager(this);
         getServer().getPluginManager().registerEvents(new DrakesRanksListener(ranksManager), this);
         PluginCommand rankCommand = getCommand("rank");
@@ -120,6 +122,11 @@ public class DrakesCore extends JavaPlugin implements DrakesCoreAPI {
         } else {
             getLogger().warning("Command 'rank' not found in plugin.yml.");
         }
+
+        economyProvider = new VaultEconomyProvider(this);
+        tabManager = new TabManager(this, ranksManager, economyProvider);
+        getServer().getPluginManager().registerEvents(tabManager, this);
+        tabManager.start();
     }
 
     @Override

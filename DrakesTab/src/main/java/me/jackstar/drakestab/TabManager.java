@@ -3,8 +3,6 @@ package me.jackstar.drakestab;
 import me.jackstar.drakescraft.utils.MessageUtils;
 import me.jackstar.drakescraft.utils.PlaceholderUtils;
 import me.jackstar.drakestab.economy.VaultEconomyProvider;
-import me.jackstar.drakesranks.domain.Rank;
-import me.jackstar.drakesranks.manager.DrakesRanksManager;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
@@ -38,7 +36,6 @@ public class TabManager implements Listener {
     private static final int MAX_SIDEBAR_LINES = 15;
 
     private final JavaPlugin plugin;
-    private final DrakesRanksManager ranksManager;
     private final VaultEconomyProvider economyProvider;
 
     private BukkitTask task;
@@ -46,7 +43,6 @@ public class TabManager implements Listener {
     private List<String> footerFrames = new ArrayList<>();
     private List<String> sidebarLines = new ArrayList<>();
     private String sidebarTitle = "<gradient:gold:yellow><b>DrakesCore</b></gradient>";
-    private String rankFormat = "%name%";
     private String moneyFormat = "<green>$%amount%</green>";
     private String tpsFormat = "%.2f";
     private boolean sidebarEnabled;
@@ -57,9 +53,8 @@ public class TabManager implements Listener {
     private int sidebarTick;
     private final SidebarRenderer sidebarRenderer = new SidebarRenderer();
 
-    public TabManager(JavaPlugin plugin, DrakesRanksManager ranksManager, VaultEconomyProvider economyProvider) {
+    public TabManager(JavaPlugin plugin, VaultEconomyProvider economyProvider) {
         this.plugin = plugin;
-        this.ranksManager = ranksManager;
         this.economyProvider = economyProvider;
         saveDefaultConfigFile();
         reload();
@@ -75,7 +70,6 @@ public class TabManager implements Listener {
         sidebarTitle = config.getString("sidebar.title", sidebarTitle);
         sidebarLines = config.getStringList("sidebar.lines");
         sidebarIntervalTicks = Math.max(1, config.getInt("sidebar.update-interval-ticks", intervalTicks));
-        rankFormat = config.getString("sidebar.rank-format", rankFormat);
         moneyFormat = config.getString("sidebar.money-format", moneyFormat);
         tpsFormat = config.getString("sidebar.tps-format", tpsFormat);
 
@@ -153,15 +147,6 @@ public class TabManager implements Listener {
             return "";
         }
 
-        Rank rank = ranksManager != null ? ranksManager.getPlayerRank(player) : null;
-        String rankName = rank != null ? rank.getName() : "N/A";
-        String rankPrefix = rank != null ? rank.getPrefix() : "";
-        String rankColor = rank != null ? rank.getColor() : "";
-        String rankDisplay = rankFormat
-                .replace("%name%", rankName)
-                .replace("%prefix%", rankPrefix)
-                .replace("%color%", rankColor);
-
         double tps = Bukkit.getTPS()[0];
         String tpsText = String.format(Locale.US, tpsFormat, tps);
 
@@ -173,10 +158,6 @@ public class TabManager implements Listener {
         }
 
         return raw
-                .replace("%rank%", rankDisplay)
-                .replace("%rank_name%", rankName)
-                .replace("%rank_prefix%", rankPrefix)
-                .replace("%rank_color%", rankColor)
                 .replace("%money%", moneyText)
                 .replace("%ping%", String.valueOf(player.getPing()))
                 .replace("%tps%", tpsText);
@@ -184,7 +165,7 @@ public class TabManager implements Listener {
 
     private List<String> defaultSidebarLines() {
         List<String> lines = new ArrayList<>();
-        lines.add("<gray>Rank:</gray> <yellow>%rank%</yellow>");
+        lines.add("<gray>Rank:</gray> <yellow>%drakesranks_rank%</yellow>");
         lines.add("<gray>Money:</gray> <green>%money%</green>");
         lines.add("<gray>Ping:</gray> <aqua>%ping%</aqua>");
         lines.add("<gray>TPS:</gray> <green>%tps%</green>");
