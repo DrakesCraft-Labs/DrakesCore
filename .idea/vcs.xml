@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="VcsDirectoryMappings">
+    <mapping directory="" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Plugins/DrakesCore" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Plugins/DrakesCrates" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Plugins/DrakesMotd" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Plugins/DrakesRanks" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Plugins/DrakesTab" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Plugins/DrakesTech" vcs="Git" />
+  </component>
+</project>
