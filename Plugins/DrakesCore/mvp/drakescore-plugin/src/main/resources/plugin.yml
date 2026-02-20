@@ -1,6 +1,0 @@
-name: DrakesCore
-version: 1.0.0-MVP
-main: me.jackstar.mvp.core.DrakesCorePlugin
-api-version: '1.20'
-authors: [JackStar]
-description: DrakesCore MVP plugin (foundation)
