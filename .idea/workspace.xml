@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d749fb63-46dd-427a-8ab5-dd77567f5ae5" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/Plugins/DrakesCrates/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/Plugins/DrakesCrates/README.md" afterDir="false" />
-    </list>
+    <list default="true" id="d749fb63-46dd-427a-8ab5-dd77567f5ae5" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -78,7 +76,7 @@
       <updated>1771614513744</updated>
       <workItem from="1771614527103" duration="784000" />
       <workItem from="1771616559348" duration="2462000" />
-      <workItem from="1771619080364" duration="1442000" />
+      <workItem from="1771619080364" duration="1809000" />
     </task>
     <servers />
   </component>
