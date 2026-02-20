@@ -1,0 +1,7 @@
+name: DrakesMotd
+version: 1.0.0-MVP
+main: me.jackstar.mvp.motd.DrakesMotdPlugin
+api-version: '1.20'
+authors: [JackStar]
+description: DrakesMotd MVP addon
+softdepend: [DrakesCore]
