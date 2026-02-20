@@ -1,1 +1,36 @@
 Plugins/
+
+# Dev server runtime folders (actual and future)
+dev-server/runtime/
+dev-server/runtime*/
+dev-server/server/
+dev-server/server*/
+
+# Paper/Spigot generated files inside dev-server
+dev-server/**/plugins/
+dev-server/**/cache/
+dev-server/**/libraries/
+dev-server/**/logs/
+dev-server/**/world/
+dev-server/**/world_*/
+dev-server/**/paper-*/
+dev-server/**/versions/
+
+# Generated server files
+dev-server/**/eula.txt
+dev-server/**/server.properties
+dev-server/**/banned-ips.json
+dev-server/**/banned-players.json
+dev-server/**/ops.json
+dev-server/**/whitelist.json
+dev-server/**/usercache.json
+dev-server/**/spigot.yml
+dev-server/**/bukkit.yml
+dev-server/**/commands.yml
+dev-server/**/help.yml
+dev-server/**/permissions.yml
+
+# Binary artifacts
+dev-server/**/*.jar
+dev-server/**/*.zip
+dev-server/**/*.log

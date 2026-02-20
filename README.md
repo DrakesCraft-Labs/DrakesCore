@@ -28,6 +28,14 @@ Este repositorio raiz funciona como contenedor y organizador del ecosistema.
 - `push-all.ps1`: add/commit/push masivo en todos los repos.
 - `repo-select.ps1`: selector interactivo para elegir repo.
 
+## Documentacion y laboratorio local
+- `docs/DRAKESCRAFT_MASTER_CONTEXT.md`: vision completa, estado actual y direccion tecnica.
+- `dev-server/README.md`: guia para montar un servidor local de pruebas.
+- `dev-server/DEPENDENCIAS.md`: lista base de plugins/dependencias externas.
+- `dev-server/build-all-plugins.ps1`: build masivo de plugins.
+- `dev-server/prepare-dev-server.ps1`: prepara runtime y copia jars.
+- `dev-server/start-dev-server.ps1`: arranca el servidor local.
+
 ## Notas
 - Este repo raiz no deberia trackear el contenido interno de `Plugins/`.
 - Si aparece ruido en `git status` del wrapper, quitar `Plugins/` del tracking en este repo.
