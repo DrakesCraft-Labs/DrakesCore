@@ -10,6 +10,7 @@ import me.jackstar.drakescrates.presentation.commands.DrakesCratesCommand;
 import me.jackstar.drakescrates.presentation.editor.CrateEditorManager;
 import me.jackstar.drakescrates.presentation.editor.CratePreviewManager;
 import me.jackstar.drakescrates.presentation.listeners.CrateListener;
+import me.jackstar.drakescraft.commands.DrShortcutCommand;
 import me.jackstar.drakesmotd.MotdManager;
 import me.jackstar.drakesranks.commands.RankCommand;
 import me.jackstar.drakesranks.listeners.DrakesRanksListener;
@@ -25,6 +26,7 @@ import me.jackstar.drakestab.economy.VaultEconomyProvider;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.command.PluginCommand;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import me.jackstar.drakescraft.api.DrakesCoreAPI;
@@ -67,66 +69,101 @@ public class DrakesCore extends JavaPlugin implements DrakesCoreAPI {
         getComponentLogger().info(Component.text(" Prepare for an epic adventure! ", NamedTextColor.LIGHT_PURPLE));
         getComponentLogger().info(Component.text("----------------------------------------", NamedTextColor.GOLD));
 
-        crateRepository = new YamlCrateRepository(this);
-        OpenCrateUseCase openCrateUseCase = new OpenCrateUseCase();
-        cratesSettings = new CratesSettings(this);
-        rouletteAnimation = new RouletteAnimation(this, cratesSettings.getRouletteSteps(), cratesSettings.getRouletteTickSpeed());
-        crateEditorManager = new CrateEditorManager(crateRepository);
-        CratePreviewManager cratePreviewManager = new CratePreviewManager();
-
-        PluginCommand drakesCratesCommand = getCommand("drakescrates");
-        if (drakesCratesCommand != null) {
-            drakesCratesCommand.setExecutor(new DrakesCratesCommand(crateRepository, crateEditorManager));
+        PluginCommand shortcutCommand = getCommand("dr");
+        if (shortcutCommand != null) {
+            DrShortcutCommand shortcutHandler = new DrShortcutCommand();
+            shortcutCommand.setExecutor(shortcutHandler);
+            shortcutCommand.setTabCompleter(shortcutHandler);
         } else {
-            getLogger().warning("Command 'drakescrates' not found in plugin.yml.");
+            getLogger().warning("Command 'dr' not found in plugin.yml.");
         }
 
-        getServer().getPluginManager().registerEvents(
-                new CrateListener(crateRepository, openCrateUseCase, rouletteAnimation, cratePreviewManager),
-                this);
-        getServer().getPluginManager().registerEvents(
-                crateEditorManager,
-                this);
-        getServer().getPluginManager().registerEvents(
-                cratePreviewManager,
-                this);
+        boolean externalCrates = isExternalPluginEnabled("DrakesCrates");
+        boolean externalTech = isExternalPluginEnabled("DrakesTech");
+        boolean externalMotd = isExternalPluginEnabled("DrakesMotd");
+        boolean externalRanks = isExternalPluginEnabled("DrakesRanks");
+        boolean externalTab = isExternalPluginEnabled("DrakesTab");
 
-        if (getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
-            new DrakesCratesPlaceholderExpansion(crateRepository).register();
-        }
-
-        NbtItemHandler nbtItemHandler = new PdcNbtItemHandler(this);
-        MachineFactory machineFactory = new MachineFactory(nbtItemHandler);
-        machineManager = new MachineManager(this, machineFactory);
-        machineManager.start();
-
-        PluginCommand drakesTechCommand = getCommand("drakestech");
-        if (drakesTechCommand != null) {
-            drakesTechCommand.setExecutor(new DrakesTechCommand(machineFactory));
+        if (externalCrates) {
+            getLogger().info("[Compat] DrakesCrates plugin detected. Skipping embedded crates module.");
         } else {
-            getLogger().warning("Command 'drakestech' not found in plugin.yml.");
+            crateRepository = new YamlCrateRepository(this);
+            OpenCrateUseCase openCrateUseCase = new OpenCrateUseCase();
+            cratesSettings = new CratesSettings(this);
+            rouletteAnimation = new RouletteAnimation(this, cratesSettings.getRouletteSteps(), cratesSettings.getRouletteTickSpeed());
+            crateEditorManager = new CrateEditorManager(crateRepository);
+            CratePreviewManager cratePreviewManager = new CratePreviewManager();
+
+            PluginCommand drakesCratesCommand = getCommand("drakescrates");
+            if (drakesCratesCommand != null) {
+                drakesCratesCommand.setExecutor(new DrakesCratesCommand(crateRepository, crateEditorManager));
+            } else {
+                getLogger().warning("Command 'drakescrates' not found in plugin.yml.");
+            }
+
+            getServer().getPluginManager().registerEvents(
+                    new CrateListener(crateRepository, openCrateUseCase, rouletteAnimation, cratePreviewManager),
+                    this);
+            getServer().getPluginManager().registerEvents(
+                    crateEditorManager,
+                    this);
+            getServer().getPluginManager().registerEvents(
+                    cratePreviewManager,
+                    this);
+
+            if (getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
+                new DrakesCratesPlaceholderExpansion(crateRepository).register();
+            }
         }
 
-        getServer().getPluginManager().registerEvents(
-                new DrakesTechBlockListener(machineManager, machineFactory),
-                this);
-
-        motdManager = new MotdManager(this);
-        getServer().getPluginManager().registerEvents(motdManager, this);
-
-        ranksManager = new DrakesRanksManager(this);
-        getServer().getPluginManager().registerEvents(new DrakesRanksListener(ranksManager), this);
-        PluginCommand rankCommand = getCommand("rank");
-        if (rankCommand != null) {
-            rankCommand.setExecutor(new RankCommand(ranksManager));
+        if (externalTech) {
+            getLogger().info("[Compat] DrakesTech plugin detected. Skipping embedded tech module.");
         } else {
-            getLogger().warning("Command 'rank' not found in plugin.yml.");
+            NbtItemHandler nbtItemHandler = new PdcNbtItemHandler(this);
+            MachineFactory machineFactory = new MachineFactory(nbtItemHandler);
+            machineManager = new MachineManager(this, machineFactory);
+            machineManager.start();
+
+            PluginCommand drakesTechCommand = getCommand("drakestech");
+            if (drakesTechCommand != null) {
+                drakesTechCommand.setExecutor(new DrakesTechCommand(machineFactory));
+            } else {
+                getLogger().warning("Command 'drakestech' not found in plugin.yml.");
+            }
+
+            getServer().getPluginManager().registerEvents(
+                    new DrakesTechBlockListener(machineManager, machineFactory),
+                    this);
         }
 
-        economyProvider = new VaultEconomyProvider(this);
-        tabManager = new TabManager(this, ranksManager, economyProvider);
-        getServer().getPluginManager().registerEvents(tabManager, this);
-        tabManager.start();
+        if (externalMotd) {
+            getLogger().info("[Compat] DrakesMotd plugin detected. Skipping embedded motd module.");
+        } else {
+            motdManager = new MotdManager(this);
+            getServer().getPluginManager().registerEvents(motdManager, this);
+        }
+
+        if (externalRanks) {
+            getLogger().info("[Compat] DrakesRanks plugin detected. Skipping embedded ranks module.");
+        } else {
+            ranksManager = new DrakesRanksManager(this);
+            getServer().getPluginManager().registerEvents(new DrakesRanksListener(ranksManager), this);
+            PluginCommand rankCommand = getCommand("rank");
+            if (rankCommand != null) {
+                rankCommand.setExecutor(new RankCommand(ranksManager));
+            } else {
+                getLogger().warning("Command 'rank' not found in plugin.yml.");
+            }
+        }
+
+        if (externalTab) {
+            getLogger().info("[Compat] DrakesTab plugin detected. Skipping embedded tab module.");
+        } else {
+            economyProvider = new VaultEconomyProvider(this);
+            tabManager = new TabManager(this, ranksManager, economyProvider);
+            getServer().getPluginManager().registerEvents(tabManager, this);
+            tabManager.start();
+        }
     }
 
     @Override
@@ -146,5 +183,10 @@ public class DrakesCore extends JavaPlugin implements DrakesCoreAPI {
         // Plugin shutdown logic
         getComponentLogger().info(Component.text("DrakesCore has been disabled.", NamedTextColor.RED));
         instance = null;
+    }
+
+    private boolean isExternalPluginEnabled(String pluginName) {
+        Plugin external = getServer().getPluginManager().getPlugin(pluginName);
+        return external != null && external != this && external.isEnabled();
     }
 }

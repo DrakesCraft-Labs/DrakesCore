@@ -6,18 +6,25 @@ authors: [JackStar]
 description: Core plugin for DrakesCraft
 softdepend: [PlaceholderAPI, Vault]
 commands:
+  dr:
+    description: Shortcut router for Drakes commands
+    usage: /dr <tab|tech|ranks|crates|motd|worlds> [args...]
+    aliases: [drcore, drk]
   drakescrates:
     description: Admin command for DrakesCrates
     usage: /drakescrates <givekey|editor|reload>
     permission: drakescrates.admin
+    aliases: [dcrate, dcrates]
   drakestech:
     description: Admin command for DrakesTech
     usage: /drakestech give <player> <machine_id>
     permission: drakestech.admin
+    aliases: [dtech]
   rank:
     description: Rank administration command
     usage: /rank <set|create|permission>
     permission: drakesranks.admin
+    aliases: [drank]
 permissions:
   drakescrates.admin:
     description: Allows use of DrakesCrates admin command
