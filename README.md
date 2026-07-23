@@ -18,9 +18,9 @@ Este repo es la version monolitica original de la que se extrajeron los plugins 
 
 ## Migracion hacia repos separados
 1. `DrakesCrates`: crates, llaves, editor y preview.
-2. `DrakesMotd`: MOTD por estado e iconos.
+2. `DrakesMotd`: MOTD por estado e icons.
 3. `DrakesTab`: tablist + sidebar.
-4. `DrakesRanks`: rangos, permisos y chat.
+4. `DrakesRanks`: ranks, permissions y chat.
 5. `DrakesTech`: maquinas y energia.
 
 ## Que falta en este repo
