@@ -78,11 +78,11 @@
             <version>1.20.6-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
-        <!-- MockBukkit for Server Simulation -->
+        <!-- MockBukkit keeps the plugin lifecycle test on Maven Central. -->
         <dependency>
-            <groupId>com.github.MockBukkit</groupId>
-            <artifactId>MockBukkit</artifactId>
-            <version>v1.20-SNAPSHOT</version>
+            <groupId>com.github.seeseemelk</groupId>
+            <artifactId>MockBukkit-v1.20</artifactId>
+            <version>3.93.2</version>
             <scope>test</scope>
         </dependency>
         <!-- JUnit 5 -->
