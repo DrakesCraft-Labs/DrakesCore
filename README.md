@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="https://raw.githubusercontent.com/DrakesCraft-Labs/DrakesCore/main/banner.svg" width="100%" alt="DrakesCore animated banner" />
+</p>
+
 # DrakesCore (Legacy Monolith)
 
 Este repo es la version monolitica original de la que se extrajeron los plugins `DrakesCrates`, `DrakesMotd`, `DrakesTab`, `DrakesRanks` y `DrakesTech`.
