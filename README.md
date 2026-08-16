@@ -9,12 +9,26 @@ Este repo es la version monolitica original de la que se extrajeron los plugins 
 
 ## Que contiene
 - Clase principal unica que inicializaba todos los modulos.
-- Utilidades compartidas (`MessageUtils`, `PlaceholderUtils`, `ItemBuilder`).
+- API interna (`DrakesCoreAPI`) y utilidades compartidas de mensajes,
+  placeholders, items y persistencia PDC/NBT.
+- Crates con tipos, llaves, repositorio YAML, preview, editor, animaciones,
+  ruleta, validacion economica y entrega de recompensas.
+- Rangos con listeners, comandos, integracion de chat y administracion.
+- MOTD con estados operativos intercambiables.
+- TAB con placeholders, sidebar y economia Vault.
+- DrakesTech con red electrica, nodos, generadores, horno electrico,
+  multibloques, factories y administracion de maquinas.
 - Configuraciones unificadas (`crates.yml`, `motd.yml`, `tab.yml`, `ranks.yml`).
+
+El alcance historico explica por que no debe convivir en produccion con todos
+los plugins extraidos: registraria dos veces listeners, comandos y estados del
+mismo dominio.
 
 ## Estado
 - Funcional como plugin unico, pero acoplado.
 - La arquitectura nueva recomendada es por plugin separado.
+- Conservado como referencia de migracion, no como dependencia comun ni JAR
+  agregado del ecosistema actual.
 
 ## Migracion hacia repos separados
 1. `DrakesCrates`: crates, llaves, editor y preview.
