@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/DrakesCraft-Labs/DrakesCore/main/banner.svg" width="100%" alt="DrakesCore animated banner" />
+  <img src="https://raw.githubusercontent.com/DrakesCraft-Labs/DrakesCore/master/banner.svg" width="100%" alt="DrakesCore animated banner" />
 </p>
 
 # DrakesCore (Legacy Monolith)
