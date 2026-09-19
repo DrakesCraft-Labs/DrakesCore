@@ -4,6 +4,8 @@
 
 # DrakesCore (Legacy Monolith)
 
+> **Archivado como referencia histórica.** La evolución del ecosistema continúa en [Drakes-Suites](https://github.com/DrakesCraft-Labs/Drakes-Suites), con los ocho módulos, y en [Odysseia](https://github.com/DrakesCraft-Labs/Odysseia) para el motor de progreso y gameplay. No se aceptan implementaciones nuevas aquí.
+
 > ### 🏰 ¡Únete a la Comunidad Oficial de DrakesCraft!
 > 
 > * 🎮 **IP del Servidor**: `mc.drakescraft.cl` *(Java 1.21.11 & Bedrock)*
