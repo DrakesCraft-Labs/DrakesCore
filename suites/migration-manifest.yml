@@ -1,0 +1,12 @@
+version: 1
+status: scaffold
+rules: [preserve-legacy-identifiers, compatibility-tests-before-cutover, no-production-deployment-yet]
+suites:
+  core: { language: java, status: planned }
+  tech: { language: java, status: planned }
+  bio: { language: java, status: planned }
+  magic: { language: java, status: planned }
+  generators: { language: java-rust, status: planned }
+  utility: { language: java-rust, status: planned }
+  combat: { language: java, status: planned }
+  server: { language: java, status: planned }
